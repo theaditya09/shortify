@@ -12,7 +12,7 @@ router.use('*', cors({
 router.get('/test', (c) => {
   return c.json({
     message: 'test request',
-  }).status(200);
+  },200);
 })
 
 router.route('/api/v1', app);
