@@ -1,16 +1,17 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client/edge"
 import { withAccelerate } from "@prisma/extension-accelerate"
 
 let prisma: ReturnType<typeof createPrisma> | null = null
 
-function createPrisma(databaseUrl: string) {
-  return new PrismaClient()
-    .$extends(withAccelerate())
+function createPrisma(accelerateUrl: string) {
+  return new PrismaClient({
+    accelerateUrl, 
+  }).$extends(withAccelerate())
 }
 
-export function getPrisma(databaseUrl: string) {
+export function getPrisma(accelerateUrl: string) {
   if (!prisma) {
-    prisma = createPrisma(databaseUrl)
+    prisma = createPrisma(accelerateUrl)
   }
   return prisma
 }
