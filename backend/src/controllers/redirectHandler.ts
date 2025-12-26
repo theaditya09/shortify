@@ -22,6 +22,16 @@ export const redirectHandler = async (c : Context) => {
             }, 404);
         }
         
+        await prisma.url.update({
+            where: {
+                shortCode: shortCode,
+            },
+            data: {
+                clicks: { increment: 1 },
+                lastClickedAt: new Date(),
+            },
+        });
+
         return c.redirect(url.longUrl);
     }
     catch (error) {
