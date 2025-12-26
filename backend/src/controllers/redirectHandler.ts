@@ -21,7 +21,13 @@ export const redirectHandler = async (c : Context) => {
                 message: "Short code not found",
             }, 404);
         }
-        
+
+        if(url.expiresAt && url.expiresAt < new Date()) {
+            return c.json({
+                message: "Short code has expired",
+            }, 404);
+        }
+
         await prisma.url.update({
             where: {
                 shortCode: shortCode,
