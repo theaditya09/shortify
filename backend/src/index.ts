@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import app from './routes/index'
+import redirect from './routes/redirect'
 
 const router = new Hono();
 
@@ -16,5 +17,6 @@ router.get('/test', (c) => {
 })
 
 router.route('/api/v1', app);
+router.route('/', redirect);
 
 export default router;
