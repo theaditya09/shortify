@@ -19,7 +19,7 @@ interface UseShortenReturn {
   reset: () => void;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8787';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8787' : '');
 
 export const useShorten = (): UseShortenReturn => {
   const [shortUrl, setShortUrl] = useState<string | null>(null);
@@ -30,6 +30,12 @@ export const useShorten = (): UseShortenReturn => {
     setLoading(true);
     setError(null);
     setShortUrl(null);
+
+    if (!API_BASE_URL) {
+      setError('API URL is not configured. Please set VITE_API_URL environment variable.');
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/v1/shorten`, {
